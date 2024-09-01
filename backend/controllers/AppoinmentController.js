@@ -63,19 +63,19 @@ exports.getAllAppoinments = async (req, res) => {
     }
 }
 
-exports.getDoctorAppoinments = async (req, res) => {
+exports.getAppoinmentsFromUser = async (req, res) => {
     const { user_id } = req.params; // Get user_id from the request parameters
 
     try {
-        // Find the doctor associated with the provided user_id
-        const doctor = await Doctor.findOne({ user_details: user_id });
+        // Find the user by their _id
+        const user = await User.findById(user_id);
 
-        if (!doctor) {
-            return res.status(404).send('Doctor not found');
+        if (!user) {
+            return res.status(404).send('User not found');
         }
 
-        // Find all appointments for this doctor
-        const appoinmentsList = await Appoinment.find({ doctor_details: doctor._id })
+        // Find all appointments for this user
+        const appoinmentsList = await Appoinment.find({ user_details: user._id })
             .populate('doctor_details')
             .populate('user_details')
             .exec();
@@ -86,4 +86,5 @@ exports.getDoctorAppoinments = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+
 
