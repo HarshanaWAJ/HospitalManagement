@@ -87,4 +87,26 @@ exports.getAppoinmentsFromUser = async (req, res) => {
     }
 };
 
+exports.getAppoinmentsFromDoctor = async (req, res) => {
+    const { doctor_id } = req.params; // Get user_id from the request parameters
 
+    try {
+        // Find the user by their _id
+        const doctor = await Doctor.findById(doctor_id);
+
+        if (!doctor) {
+            return res.status(404).send('Doctor not found');
+        }
+
+        // Find all appointments for this user
+        const appoinmentsList = await Appoinment.find({ doctor_details: doctor._id })
+            .populate('doctor_details')
+            .populate('user_details')
+            .exec();
+
+        res.json(appoinmentsList);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send('Internal Server Error');
+    }
+};
