@@ -87,6 +87,7 @@ exports.getAppoinmentsFromUser = async (req, res) => {
     }
 };
 
+//get appoinment list by doctor id
 exports.getAppoinmentsFromDoctor = async (req, res) => {
     const { doctor_id } = req.params; // Get user_id from the request parameters
 
@@ -110,3 +111,17 @@ exports.getAppoinmentsFromDoctor = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+
+exports.deleteAppoinmentById = async (req, res) => {
+    const { id } = req.params; // Extract the id from req.params
+    try {
+        const deletedAppoinment = await Appoinment.findByIdAndDelete(id); // Use id directly
+        if (!deletedAppoinment) {
+            return res.status(400).send('Appointment deletion failed');
+        }
+        res.status(200).send('Appointment deleted: ' + deletedAppoinment);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send('Internal Server Error');
+    }
+}

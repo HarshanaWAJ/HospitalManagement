@@ -6,7 +6,8 @@ const {
     getDoctorDetails,
     getSelectedDoctorDetails,
     updateDoctorById,
-    doctorDeleteById
+    doctorDeleteById,
+    getDoctorDetailsBySpecialization
 } = require('../controllers/DoctorController');
 
 // Routes for Doctor
@@ -15,5 +16,6 @@ router.get('/get-doctor-details', getDoctorDetails);
 router.get('/get-doctor-selected-details', getSelectedDoctorDetails);
 router.put('/update-doctor/:id', updateDoctorById);
 router.delete('/delete-doctor/:id', doctorDeleteById);
+router.get('/get-doctor-details-by-specialize', getDoctorDetailsBySpecialization);
 
 module.exports = router;

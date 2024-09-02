@@ -116,3 +116,19 @@ exports.doctorDeleteById = async (req, res) => {
         res.status(500).send('Internal Server Error')
     }
 }
+
+exports.getDoctorDetailsBySpecialization = async (req, res) => {
+    const {specialization} = req.body
+    try {
+        const doctors = await Doctor.findOne({specialization})
+            .populate('user_details') // Populate the user_details field with User data (Make the Connection between tables)
+            .exec();
+        if (!doctors) {
+            res.status(404).send("No Doctor Found")
+        }
+        res.json(doctors)
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send('Server Error');
+    }
+};
